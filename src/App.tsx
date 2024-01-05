@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 
@@ -11,6 +11,7 @@ const App: React.FC = () => {
   const scrollbarAreaRef = useRef<HTMLDivElement>(null)
   const dotsRef = useRef<HTMLDivElement | null>(null)
   const isDragging = useRef(false)
+  const [isActive, setActive] = useState(false)
 
   // Function to update the width of the content based on its children
   const updateContentWidth = (): void => {
@@ -74,6 +75,33 @@ const App: React.FC = () => {
     }
   }
 
+  const highlightActiveCard = (scrollProgress: number) => {
+    const container = containerRef.current
+    const content = contentRef.current
+    const dotsContainer = dotsRef.current
+
+    if (container && content && dotsContainer) {
+      const cards = Array.from(content.children) as HTMLElement[]
+
+      let activeCardIndex = Math.floor(scrollProgress * (cards.length - 1))
+
+      // Check if scroll is at the end and set the last card as active
+      if (container.scrollLeft + container.offsetWidth >= content.scrollWidth) {
+        activeCardIndex = cards.length - 1
+      }
+
+      // Remove 'active-card' class from all cards
+      cards.forEach((card) => {
+        card.classList.remove('active-card') // Replace 'active-card' with the actual class name you use for highlighting
+      })
+
+      // Add 'active-card' class to the active card
+      if (cards[activeCardIndex]) {
+        cards[activeCardIndex].classList.add('active-card') // Replace 'active-card' with the actual class name you use for highlighting
+      }
+    }
+  }
+
   const handleScroll = () => {
     const container = containerRef.current
     const content = contentRef.current
@@ -101,7 +129,7 @@ const App: React.FC = () => {
 
       // Set the thumb position
       scrollbar.style.left = `${thumbLeft}px`
-
+      highlightActiveCard(scrollRatio)
       // Update the dots based on the scroll position
       updateDots(scrollRatio)
     }
@@ -143,7 +171,6 @@ const App: React.FC = () => {
       // Set the new positions
       container.scrollLeft = newScrollPosition
       scrollbar.style.left = `${thumbPosition}px`
-
       // Update the dots based on the new scroll position
       updateDots(
         container.scrollLeft / (content.scrollWidth - container.clientWidth)
@@ -220,6 +247,7 @@ const App: React.FC = () => {
       scrollbar.style.left = `${boundedThumbLeft}px`
       container.scrollLeft = scrollRatio * maxScrollLeft
 
+      highlightActiveCard(scrollRatio)
       // Update the dots based on the scroll position
       updateDots(scrollRatio)
     }
@@ -248,18 +276,19 @@ const App: React.FC = () => {
     <div className="relative mx-auto h-full w-[1000px]">
       <div ref={containerRef} className="container mx-auto">
         <div ref={contentRef} className="content flex gap-4">
-          <div className="h-[200px] w-[400px] bg-red-200"></div>
-          <div className="h-[200px] w-[400px] bg-red-200"></div>
-          <div className="h-[200px] w-[400px] bg-red-200"></div>
-          <div className="h-[200px] w-[400px] bg-blue-200"></div>
-          <div className="h-[200px] w-[400px] bg-blue-200"></div>
-          <div className="h-[200px] w-[400px] bg-blue-200"></div>
-          <div className="h-[200px] w-[400px] bg-yellow-200"></div>
-          <div className="h-[200px] w-[400px] bg-yellow-200"></div>
-          <div className="h-[200px] w-[400px] bg-yellow-200"></div>
-          <div className="h-[200px] w-[400px] bg-green-200"></div>
-          <div className="h-[200px] w-[400px] bg-green-200"></div>
-          <div className="h-[200px] w-[400px] bg-green-200"></div>
+          {/* Flex items with Tailwind CSS classes for styling and margin */}
+          <div className="h-[200px] w-[250px] bg-red-200"></div>
+          <div className="h-[200px] w-[250px] bg-red-200"></div>
+          <div className="h-[200px] w-[250px] bg-red-200"></div>
+          <div className="h-[200px] w-[250px] bg-blue-200"></div>
+          <div className="h-[200px] w-[250px] bg-blue-200"></div>
+          <div className="h-[200px] w-[250px] bg-blue-200"></div>
+          <div className="h-[200px] w-[250px] bg-yellow-200"></div>
+          <div className="h-[200px] w-[250px] bg-yellow-200"></div>
+          <div className="h-[200px] w-[250px] bg-yellow-200"></div>
+          <div className="h-[200px] w-[250px] bg-green-200"></div>
+          <div className="h-[200px] w-[250px] bg-green-200"></div>
+          <div className="h-[200px] w-[250px] bg-green-200"></div>
         </div>
       </div>
       <div
