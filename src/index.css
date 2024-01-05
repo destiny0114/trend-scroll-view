@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: white;
+  width: 100vw;
+  height: 100vh;
+  background-image: linear-gradient(
+    330deg,
+    hsl(271, 100%, 95%) 0%,
+    hsl(227, 100%, 91%) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Styling the container and content */
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+  overflow: hidden;
+}
+
+.content {
+  position: absolute;
+  width: 6000px; /* Adjust according to your content */
+  height: 400px;
+  left: 0;
+  transition: left 0.2s ease;
+}
+
+/* Styling the custom scrollbar */
+.scrollbar {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  bottom: 0;
+  margin: auto 0;
+  width: 42px; /* Width of the scrollbar */
+  height: 20px;
+  background-color: #daa520;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+/* Adjust this as needed based on your design */
+.scrollbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to right,
+    #a1c4fd,
+    #c2e9fb
+  ); /* Your desired track background */
+  border-radius: 10px; /* Optional: if you want rounded corners */
+  opacity: 0.5;
+}
+
+.active-card {
+  @apply border-8 border-orange-500;
+}
